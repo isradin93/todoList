@@ -20,7 +20,7 @@ let fromLocaleStorage = function() {
     }
 };
 
-const render = function() {
+const render = () => {
     todoList.textContent = '';
     todoCompleted.textContent = '';
 
