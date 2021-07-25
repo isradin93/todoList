@@ -31,7 +31,7 @@ const render = function() {
         li.innerHTML = `
             <span class="text-todo">${item.value}</span>
             <div class="todo-buttons">
-                <button class="todo-remove"></button>
+                <button data-id="${item.id}" class="todo-remove"></button>
                 <button class="todo-complete"></button> 
             </div>
         `;
@@ -49,16 +49,17 @@ const render = function() {
             render();
         });
 
-        const btnTodoDelete = document.querySelectorAll('.todo-remove');
+        const btnTodoDelete = li.querySelector('.todo-remove');
 
-        btnTodoDelete.forEach(function(basket, i) {
-            basket.addEventListener('click', function() {
-                basket.parentElement.parentElement.remove();
-                todoData.value.splice(i, 1);
-                render();
+        btnTodoDelete.addEventListener('click', function() {
+            todoData = todoData.filter(item => {
+                return item.id !== btnTodoDelete.dataset.id;
             });
+
+            render();
         });
     });
+
     toLocalStorage();
 };
 
@@ -66,6 +67,7 @@ todoControl.addEventListener('submit', function(e) {
     e.preventDefault();
 
     const newTodo = {
+        id: Math.random().toString(36).substring(2, 8) + (+new Date()).toString(32),
         value: headerInput.value,
         completed: false
     };
